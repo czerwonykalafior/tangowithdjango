@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>UserProfileForm</title>
+</head>
+<body>
+{{ user.username }}
+
+    {% if registered %}
+        Rango says: <strong>thank you for registering!</strong>
+        <a href="/rango/">Return to the homepage.</a><br />
+    {% else %}
+        Rango says: <strong>register here!</strong><br />
+
+        <form id="user_form" method="post" action="{% url 'add_profile' %}" enctype="multipart/form-data">
+{# TODO: broken shit powinno stworzyc profil. Nie moge przekazac usera do formularza... raz sie udalo... #}
+            {% csrf_token %}
+           <p><input class="login"  id="user"  name="user" type="text"  value="{{ user }}"/></p>
+            <p>{{ profile_form.website }}</p>
+            <p>{{ profile_form.picture }}</p>
+            <input type="submit" name="submit" value="Register" />
+        </form>
+    {% endif %}
+</body>
+</html>

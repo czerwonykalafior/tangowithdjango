@@ -1,5 +1,7 @@
 <!DOCTYPE html>
 
+{% load staticfiles %}
+
 {% load rango_extras %}
 
 <html lang="en">
@@ -13,7 +15,6 @@
 
     <title>Rango - {% block title %}How to Tango with Django!{% endblock %}</title>
     <link href="http://bootswatch.com/yeti/bootstrap.min.css" rel="stylesheet">
-{#https://bootswatch.com/flatly/bootstrap.min.css#}
     <link href="http://getbootstrap.com/examples/dashboard/dashboard.css" rel="stylesheet">
 
     <!--[if lt IE 9]>
@@ -38,9 +39,12 @@
             <ul class="nav navbar-nav navbar-right">
                 <li><a href="{% url 'index' %}">Home</a></li>
                 {% if user.is_authenticated %}
+
                     <li><a href="{% url 'restricted' %}">Restricted Page</a></li>
+                    <li><a href="{% url 'profile' %}">Profile</a></li>
                     <li><a href="{% url 'auth_logout' %}?next=/rango/">Logout</a></li>
-                    <li><a href="{% url 'add_category' %}">Add a New Category</a></li>
+                    <li></li>
+
                 {% else %}
                     <li><a href="{% url 'registration_register' %}">Register Here</a></li>
                     <li><a href="{% url 'auth_login' %}">Login</a></li>
@@ -55,10 +59,12 @@
 <div class="container-fluid">
     <div class="row">
         <div class="col-sm-3 col-md-2 sidebar">
+
             {% block side_block %}{% endblock %}
 
         </div>
         <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+
             <div>
                 <div class="page-header">
                     <h1>{% block page-header %}Home{% endblock %}</h1>
@@ -71,18 +77,33 @@
     </div>
     <div class="col-sm-3 col-md-2 sidebar">
 
+        <ul class="nav nav-list clear">
+        <div class="class="nav-header">
+            <li >Find a Category {% if user.is_authenticated %}or
+                <a href="{% url 'add_category' %}">add</a>{% endif %}
+                </li>
+        </div>
+            <form>
+                <label></label>
+                <li><input  class="search-query span10" type="text" name="suggestion" value="" id="suggestion" /></li>
+            </form>
+        </ul>
+
+        <div id="cats">
+        </div>
+
     {% block tt %}
     {% get_category_list category %}
     {% endblock %}
-
-        <h1><a href="{% url 'search' %}">serach</a></h1>
     </div>
+{#        <h1><a href="{% url 'search' %}">serach</a></h1>#}
 
 
     <!-- Bootstrap core JavaScript
     ================================================== -->
     <!-- Placed at the end of the document so the pages load faster -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+    <script src="{% static "js/rango-ajax.js" %}"></script>
     <script src="http://getbootstrap.com/dist/js/bootstrap.min.js"></script>
     <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
     <script src="http://getbootstrap.com/assets/js/ie10-viewport-bug-workaround.js"></script>

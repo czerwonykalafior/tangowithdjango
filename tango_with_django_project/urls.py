@@ -22,7 +22,7 @@ from tango_with_django_project import settings
 
 class MyRegistrationView(RegistrationView):
     def get_success_url(self,request, user):
-        return '/rango/'
+        return '/rango/add_profile/'
 
 
 urlpatterns = [
