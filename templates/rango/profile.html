@@ -1,14 +1,15 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Profile</title>
-</head>
-<body>
+{% extends 'rango/base.html' %}
 
-    {{username}}
-    {{email}}
-    {{website}}
-    {{picture}}
-</body>
-</html>
+{% load staticfiles %}
+{% block title %}Profile{% endblock %}
+
+{% block  page-header %}Your profile: {{user.username}} {% endblock %}
+
+{% block body_block %}
+
+
+    <p>mail: {{user.email}}</p>
+    <p>web: <a href="{{web}}">{{web}}</a></p>
+    <p><img src="/media/{{img}}"></p>
+{% endblock %}
+

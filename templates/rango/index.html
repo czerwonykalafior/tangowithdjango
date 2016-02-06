@@ -27,7 +27,8 @@
             {% if categories %}
                 <ul class="list-group">
                     {% for category in categories %}
-                        <li class="list-group-item"><a href="{% url 'category'  category.slug %}">{{ category.name }} [viewes: {{ category.views }}]</a></li>
+                        <li class="list-group-item"><a href="{% url 'category'  category.slug %}">{{ category.name }}
+                            [viewes: <span class="badge">{{ category.views }}</span>]</a></li>
                     {% endfor %}
                 </ul>
             {% else %}

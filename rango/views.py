@@ -8,7 +8,7 @@ from django.views.decorators.csrf import csrf_exempt
 from rango.bing_search import run_query
 from rango.forms import CategoryForm, PageForm, UserForm, UserProfileForm
 from rango.get_category_list import get_category_list
-from rango.models import Category, Page
+from rango.models import Category, Page, UserProfile
 
 
 def index(request):
@@ -43,18 +43,6 @@ def index(request):
     response = render(request, 'rango/index.html', context_dict)
 
     return response
-
-
-def about(request):
-    # If the visits session varible exists, take it and use it.
-    # If it doesn't, we haven't visited the site so set the count to zero.
-    if request.session.get('visits'):
-        count = request.session.get('visits')
-    else:
-        count = 0
-
-    # remember to include the visit data
-    return render(request, 'rango/about.html', {'visits': count})
 
 
 def category(request, category_name_slug):
@@ -125,6 +113,18 @@ def add_page(request, category_name_slug):
     context_dict = {'form': form, 'category': cat, 'category_name_slug': category_name_slug}
 
     return render(request, 'rango/add_page.html', context_dict)
+
+
+def about(request):
+    # If the visits session varible exists, take it and use it.
+    # If it doesn't, we haven't visited the site so set the count to zero.
+    if request.session.get('visits'):
+        count = request.session.get('visits')
+    else:
+        count = 0
+
+    # remember to include the visit data
+    return render(request, 'rango/about.html', {'visits': count})
 
 
 def register(request):
@@ -237,7 +237,17 @@ def register_profile(request):
 
 
 def profile(request):
-    return HttpResponse('profile')
+    context_dict ={}
+
+    if request.method == 'GET':
+        if 'id' in request.GET:
+            id = request.GET['id']
+            profile = UserProfile.objects.get(id = id)
+            img = profile.picture
+            web = profile.website
+            context_dict = {'img': img, 'web': web }
+
+    return render(request, 'rango/profile.html', context_dict)
 
 
 def user_login(request):
@@ -265,8 +275,7 @@ def user_login(request):
 
 @login_required
 def restricted(request):
-    return HttpResponse("Since you're logged in, you can see this text!")
-
+    return render(request, 'rango/restricted_zone.html')
 
 @login_required
 def user_logout(request):
